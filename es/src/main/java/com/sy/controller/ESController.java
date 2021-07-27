@@ -1,5 +1,6 @@
 package com.sy.controller;
 
+import com.sy.service.EsService;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -8,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,18 +24,28 @@ public class ESController {
     @Autowired
     private RestHighLevelClient client;
 
-    @GetMapping("/get")
+    @Autowired
+    private EsService esService;
+
+    // 测试连通
+    @GetMapping("/check/{name}")
     public Boolean getIndexIsExist(
-//            @PathVariable("id") String id,
-//            @PathVariable("name") String name
+            @PathVariable("name") String name
     ) throws IOException {
-        GetRequest getRequest = new GetRequest(
-                "posts",
-                "1");
-        getRequest.fetchSourceContext(new FetchSourceContext(false));
-        getRequest.storedFields("_none_");
-        boolean exists = client.exists(getRequest, RequestOptions.DEFAULT);
-        return exists;
+        return esService.checkIndexExist(name);
+    }
+
+    @GetMapping("/create")
+    public Boolean createIndex(
+    ) throws IOException {
+        return esService.createIndex();
+    }
+
+    @GetMapping("/getMapping/{name}")
+    public Boolean createIndex(
+            @PathVariable("name") String name
+    ) throws IOException {
+        return esService.getMapping(name);
     }
 
 }
