@@ -1,5 +1,8 @@
 package com.sy.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.sy.bean.User;
 import com.sy.constant.ESConstants;
 import com.sy.service.SearchService;
@@ -52,7 +55,7 @@ public class SearchServiceImpl implements SearchService {
             SearchUtil.buildMapping(createIndexRequest);
             CreateIndexResponse response = client.indices().create(createIndexRequest, RequestOptions.DEFAULT);
         } else {
-            logger.error("创建失败,库已近存在");
+            logger.error("创建失败,库已经存在");
         }
     }
 
@@ -65,8 +68,10 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public void add(User user) throws IOException {
+        String userJson = JSON.toJSONString(user);
+        Map map = JSON.parseObject(userJson, Map.class);
         IndexRequest indexRequest = new IndexRequest(ESConstants.ES_INDEX_TEST_STRING);
-        indexRequest.source(user, XContentType.JSON);
+        indexRequest.source(map, XContentType.JSON);
         IndexResponse response = client.index(indexRequest, RequestOptions.DEFAULT);
         logger.error("插入数据结果是:{}", user.toString());
     }
@@ -87,7 +92,7 @@ public class SearchServiceImpl implements SearchService {
             // 根据ID来更新 状态 注意在 状态报告中的 状态 和 下发日志中的状态的 字段名不同
             UpdateRequest updateRequest = new UpdateRequest(ESConstants.ES_INDEX_TEST_STRING, id);
             IndexRequest indexRequest = new IndexRequest(ESConstants.ES_INDEX_TEST_STRING, id);
-            Map<Object, Object> source = new HashMap<>();
+            Map<String, Object> source = new HashMap<>();
             source.put("userName", user.getUserName());
             source.put("address", user.getAddress());
             source.put("age", user.getAge());
@@ -102,9 +107,9 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public void deleteIndex(String index) throws Exception {
-        if (existIndex(index)) {
-            DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(index);
+    public void deleteIndex() throws Exception {
+        if (existIndex(ESConstants.ES_INDEX_TEST_STRING)) {
+            DeleteIndexRequest deleteIndexRequest = new DeleteIndexRequest(ESConstants.ES_INDEX_TEST_STRING);
             AcknowledgedResponse response = client.indices().delete(deleteIndexRequest, RequestOptions.DEFAULT);
             logger.error("删除index的结果是:{}", response);
         }

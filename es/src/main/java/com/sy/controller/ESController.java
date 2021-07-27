@@ -1,19 +1,21 @@
 package com.sy.controller;
 
+import com.sy.bean.User;
 import com.sy.service.EsService;
+import com.sy.service.SearchService;
 import org.elasticsearch.action.get.GetRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/es")
@@ -26,6 +28,9 @@ public class ESController {
 
     @Autowired
     private EsService esService;
+
+    @Autowired
+    private SearchService searchService;
 
     // 测试连通
     @GetMapping("/check/{name}")
@@ -48,4 +53,31 @@ public class ESController {
         return esService.getMapping(name);
     }
 
+    @GetMapping("/createIndex")
+    public String createIndexByUtil() throws IOException {
+        searchService.createIndex();
+        return "创建成功";
+    }
+
+    @GetMapping("/delIndex")
+    public String delIndex() throws Exception {
+        searchService.deleteIndex();
+        return "删除成功";
+    }
+
+    @PostMapping("/add")
+    public String addUser(
+            @RequestBody User user
+    ) throws IOException, ParseException {
+        searchService.add(user);
+        return "创建成功";
+    }
+
+    @PostMapping("/update")
+    public String updateUser(
+            @RequestBody User user
+    ) throws IOException {
+        searchService.update(user);
+        return "更新成功！";
+    }
 }
