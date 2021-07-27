@@ -79,7 +79,7 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public void update(User user) throws IOException {
         if (user.getUserId() != null) {
-            // 通过msgId从ES中获得对象的ID(此ID为ES随机生成)
+            // 根据userId查询到记录所存的esId
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
             BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
             boolQueryBuilder.must(new TermQueryBuilder("userId", user.getUserId()));
@@ -89,7 +89,7 @@ public class SearchServiceImpl implements SearchService {
             SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
             SearchHits searchHits = response.getHits();
             String id = searchHits.getAt(0).getId();
-            // 根据ID来更新 状态 注意在 状态报告中的 状态 和 下发日志中的状态的 字段名不同
+            // 根据ID来更新
             UpdateRequest updateRequest = new UpdateRequest(ESConstants.ES_INDEX_TEST_STRING, id);
             IndexRequest indexRequest = new IndexRequest(ESConstants.ES_INDEX_TEST_STRING, id);
             Map<String, Object> source = new HashMap<>();
