@@ -1,0 +1,25 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: redis
+  redis:
+    port: 8000
+    host: 116.62.136.166
+    password: ssssyy
+    timeout: 5000
+  rabbitmq:
+    host: 116.62.136.166
+    port: 5672
+    username: ssssyy
+    password: 123456
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://ssssyy:123456@localhost:8080/eureka/
+  instance:
+    ipAddress: true
+    instanceId: ${spring.cloud.client.ip-address}:${server.port}
+    hostname: ${spring.cloud.client.ip-address}

@@ -1,0 +1,18 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: elasticSearch
+  elasticsearch:
+    rest:
+      uris: http://116.62.136.166:9000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://ssssyy:123456@localhost:8080/eureka/
+  instance:
+    ipAddress: true
+    instanceId: ${spring.cloud.client.ip-address}:${server.port}
+    hostname: ${spring.cloud.client.ip-address}

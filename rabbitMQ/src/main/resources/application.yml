@@ -1,0 +1,20 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: MQSender
+  rabbitmq:
+    host: 116.62.136.166
+    port: 5672
+    username: ssssyy
+    password: 123456
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://ssssyy:123456@localhost:8080/eureka/
+  instance:
+    ipAddress: true
+    instanceId: ${spring.cloud.client.ip-address}:${server.port}
+    hostname: ${spring.cloud.client.ip-address}
