@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/redis")
+@RequestMapping("/cache")
 public class RedisController {
 
     @Autowired
@@ -19,6 +19,12 @@ public class RedisController {
     @GetMapping("/setStr/{key}/{value}")
     public Boolean setString(@PathVariable String key, @PathVariable String value) {
         return redisService.setString(key,value);
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        System.out.println("ssssssssssssssssssssss");
+        return ";ssss";
     }
 
     @GetMapping("/setFast/{key}/{value}")

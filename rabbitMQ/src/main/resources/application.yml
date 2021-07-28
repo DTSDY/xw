@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: RABBITMQ-SERVICE
+    name: rabbitmq-service
   rabbitmq:
     host: 116.62.136.166
     port: 5672

@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: FEIGN-SERVICE
+    name: feign-service
 
 eureka:
   client:

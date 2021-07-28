@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: REDIS-SERVICE
+    name: redis-service
   redis:
     port: 8000
     host: 116.62.136.166

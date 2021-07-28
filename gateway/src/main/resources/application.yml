@@ -1,0 +1,27 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: redis
+          uri: lb://REDIS-SERVICE
+          predicates:
+          - Path=/redis-service/**
+      default-filters:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://ssssyy:123456@localhost:8080/eureka/
+  instance:
+    ipAddress: true
+    instanceId: ${spring.cloud.client.ip-address}:${server.port}
+    hostname: ${spring.cloud.client.ip-address}
