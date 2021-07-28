@@ -1,14 +1,9 @@
 server:
-  port: 8082
+  port: 8084
 
 spring:
   application:
-    name: RABBITMQ-SERVICE
-  rabbitmq:
-    host: 116.62.136.166
-    port: 5672
-    username: ssssyy
-    password: 123456
+    name: FEIGN-SERVICE
 
 eureka:
   client:

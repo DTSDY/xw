@@ -31,6 +31,7 @@
         <module>rabbitMQ</module>
         <module>base</module>
         <module>es</module>
+        <module>feign</module>
     </modules>
 
     <dependencyManagement>
